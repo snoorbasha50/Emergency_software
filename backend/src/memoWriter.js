@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 async function writeMemo(analysis) {
+
   const totalScore =
     analysis.teamScore +
     analysis.productScore +
@@ -29,7 +30,7 @@ ${totalScore}/100
 ## Score Breakdown
 
 | Category | Score |
-|-----------|---------|
+|-----------|-------|
 | Team | ${analysis.teamScore}/20 |
 | Product | ${analysis.productScore}/20 |
 | Market | ${analysis.marketScore}/20 |
@@ -65,28 +66,34 @@ ${analysis.confidence}
 ${analysis.whatWouldChangeMyMind}
 `;
 
-  const outputDir = path.join(__dirname, "../output");
+  // Only write markdown locally (not in Lambda)
+  if (process.env.NODE_ENV !== "production") {
 
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir);
+    const outputDir = path.join(__dirname, "../output");
+
+    if (!fs.existsSync(outputDir)) {
+      fs.mkdirSync(outputDir, { recursive: true });
+    }
+
+    const fileName = analysis.company
+      .replace(/[^a-zA-Z0-9]/g, "_")
+      .toLowerCase();
+
+    fs.writeFileSync(
+      path.join(outputDir, `${fileName}.md`),
+      memo
+    );
+
   }
 
-  const fileName = analysis.company
-    .replace(/[^a-zA-Z0-9]/g, "_")
-    .toLowerCase();
-if (process.env.NODE_ENV !== "production") {
-  fs.writeFileSync(
-    path.join(outputDir, `${fileName}.md`),
-    memo
-  );
-}
-
   return {
-  company: analysis.company,
-  score: totalScore,
-  verdict,
-  memo,                                    
-};
+    company: analysis.company,
+    score: totalScore,
+    verdict,
+    memo,
+    analysis,
+  };
+
 }
 
 module.exports = {
