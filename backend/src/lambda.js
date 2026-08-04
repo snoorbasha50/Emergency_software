@@ -11,6 +11,7 @@ exports.handler = async (event, context) => {
 
     proxy = awsLambdaFastify(app);
   }
+  console.log("🚀 Startup Research API v3.4");
 
   return proxy(event, context);
 };
