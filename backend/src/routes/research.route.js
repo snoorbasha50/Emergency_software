@@ -3,7 +3,7 @@ const { runPipeline } = require("../pipeline");
 
 async function routes(fastify, options) {   // <-- accept options
 
-  fastify.post("/api/research", async (request, reply) => {
+  fastify.post("/research", async (request, reply) => {
 
     const { topic } = request.body;
 
