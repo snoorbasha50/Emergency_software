@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { researchApi } from "./api";
 import type { Startup } from "./types";
-import axios from "axios";
+
 
 import StartupCard from "./components/StartupCard";
 import MemoModal from "./components/MemoModal";
