@@ -19,9 +19,8 @@ async function buildApp() {
     status: "ok",
   }));
 
-  await app.register(researchRoutes, {
-    prefix: "/api",
-  });
+  await app.register(researchRoutes)
+
 
   console.log(app.printRoutes(),"routes");
 
