@@ -13,31 +13,47 @@ export default function App() {
   const [selected, setSelected] = useState<Startup | null>(null);
 
   async function handleResearch() {
-    if (!topic.trim()) return;
+  if (!topic.trim()) return;
 
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
 
-      const res = await researchApi.analyze(topic);
+    const res = await researchApi.analyze(topic);
 
-      setResults(res.data.companies);
-    } catch (err) {
-      console.error(err);
+    console.log("FULL AXIOS RESPONSE");
+    console.log(res);
 
-     if (axios.isAxiosError(err)) {
-    console.log("Status:", err.response?.status);
-    console.log("Response:", err.response?.data);
-    console.log("Message:", err.message);
+    console.log("DATA");
+    console.log(res.data);
 
-    alert(JSON.stringify(err.response?.data ?? err.message));
-  } else {
+    console.log("COMPANIES");
+    console.log(res.data.companies);
+
+    setResults(res.data.companies);
+
+  } catch (err: any) {
+
+    console.log("ERROR");
     console.log(err);
-    alert("Unknown error");
+
+    console.log("MESSAGE");
+    console.log(err.message);
+
+    console.log("CODE");
+    console.log(err.code);
+
+    console.log("RESPONSE");
+    console.log(err.response);
+
+    console.log("REQUEST");
+    console.log(err.request);
+
+    alert(err.message);
+
+  } finally {
+    setLoading(false);
   }
-    } finally {
-      setLoading(false);
-    }
-  }
+}
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white">
