@@ -17,7 +17,7 @@ async function runPipeline(topic) {
     console.log(`Found ${startups.length} startups`);
 
     // Limit to 3 startups for faster execution
-    startups = startups.slice(0, 1);
+    startups = startups.slice(0, 4);
 
     console.log(`Analyzing ${startups.length} startups`);
 
