@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { researchApi } from "./api";
 import type { Startup } from "./types";
+import axios from "axios";
 
 import StartupCard from "./components/StartupCard";
 import MemoModal from "./components/MemoModal";
@@ -22,7 +23,17 @@ export default function App() {
       setResults(res.data.companies);
     } catch (err) {
       console.error(err);
-      alert("Failed to analyze startups");
+
+     if (axios.isAxiosError(err)) {
+    console.log("Status:", err.response?.status);
+    console.log("Response:", err.response?.data);
+    console.log("Message:", err.message);
+
+    alert(JSON.stringify(err.response?.data ?? err.message));
+  } else {
+    console.log(err);
+    alert("Unknown error");
+  }
     } finally {
       setLoading(false);
     }
